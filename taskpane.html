@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mobile Add-in</title>
+
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+    <script type="text/javascript">
+        Office.onReady((info) => {
+            if (info.host === Office.HostType.Outlook) {
+                const item = Office.context.mailbox.item;
+
+                const signature = "<h1>Event Based Signature Added.</h1>";
+                item.body.setSignatureAsync(signature, { coercionType: Office.CoercionType.Html }, (result) => {
+                    if (result.status === Office.AsyncResultStatus.Failed) {
+                        console.log(result.error.message);
+                    }
+                });
+            }
+        });
+
+        function onNewMessageComposeHandler(event) {
+            const item = Office.context.mailbox.item;
+
+            const signature = "<h1>Event Based Signature Added.</h1>";
+            item.body.setSignatureAsync(signature, { coercionType: Office.CoercionType.Html }, (result) => {
+                if (result.status === Office.AsyncResultStatus.Failed) {
+                    console.log(result.error.message);
+                }
+                event.completed();
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <p>Your Add-in Works Fine.</p>
+</body>
+
+</html>
